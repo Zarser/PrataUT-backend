@@ -140,9 +140,19 @@ def generate_response(emotion, user_input, profile):
 
 @app.route("/chat", methods=["POST", "OPTIONS"])
 def chat():
+    # Get the origin from the request
+    origin = request.headers.get('Origin')
+    
+    # List of allowed origins
+    allowed_origins = [
+        "http://localhost:3000",
+        "https://prata-ut.vercel.app"
+    ]
+    
     if request.method == "OPTIONS":
         response = app.make_default_options_response()
-        response.headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+        if origin in allowed_origins:
+            response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
         response.headers["Access-Control-Allow-Headers"] = "Content-Type"
         return response
