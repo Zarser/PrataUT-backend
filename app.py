@@ -9,7 +9,7 @@ from openai import OpenAI
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/chat": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, origins=["https://prata-ut.vercel.app", "http://localhost:3000"], supports_credentials=True)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
