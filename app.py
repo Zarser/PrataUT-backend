@@ -10,12 +10,13 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app, resources={
-    r"/chat": {
-        "origins": ["https://prata-ut.vercel.app", "http://localhost:3000"],
-        "methods": ["GET", "POST", "OPTIONS"],  # Important for preflight
-        "allow_headers": ["Content-Type"],
-        "supports_credentials": True
+    r"/*": {
+        "origins": "*",  # Allow all origins temporarily
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["*"],
+        "supports_credentials": False
     }
+})
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
