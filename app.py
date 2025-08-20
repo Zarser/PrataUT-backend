@@ -102,26 +102,60 @@ def detect_emotion(text):
     return "neutral"
 
 def guess_user_profile(text):
-    text_lower = text.lower()
+    text_lower = text.lower().strip()
 
-    child_keywords = ["leka", "mamma", "pappa", "skolan", "barbie", "minecraft", "jag är 10", "jag är ett barn",
-    "leksak", "godis", "min favoritfärg", "titta på barnkanalen", "mellanmål", "jag går i trean",
-    "ritar", "mina kompisar", "gosedjur", "sovdags", "min fröken", "klasskompisar"]
-    teen_keywords = ["asså", "lol", "wtf", "typ", "fan", "snapchat", "plugga", "jag är 15", "gymnasiet",
-    "seriöst", "cringe", "tiktok", "min crush", "prov", "insta", "fomo", "kompisdrama",
-    "jag mår skit", "kan inte sova", "livet suger", "min klass"]
-    adult_keywords = ["jobb", "relation", "utmattad", "barnen", "psykolog", "deprimerad", "utbränd",
-    "ansvar", "schemaläggning", "chef", "partner", "samboliv", "ekonomi", "skilsmässa",
-    "karriär", "boende", "räkningar", "terapi", "familjeförhållanden"]
+    # Kolla ålder direkt (om någon skriver "jag är X år")
+    age_match = re.search(r"\b(\d{1,2})\s*(år|yo|yrs?)\b", text_lower)
+    if age_match:
+        age = int(age_match.group(1))
+        if age <= 12:
+            return "child"
+        elif 13 <= age <= 19:
+            return "teen"
+        else:
+            return "adult"
 
+    # Nyckelordslistor
+    child_keywords = ["leka", "mamma", "pappa", "skolan", "barbie", "minecraft", "jag är 10",
+        "jag är ett barn", "leksak", "godis", "min favoritfärg", "barnkanalen",
+        "mellanmål", "jag går i trean", "ritar", "gosedjur", "sovdags", "fröken"]
+    teen_keywords = ["asså", "lol", "wtf", "typ", "fan", "snapchat", "plugga", "jag är 15",
+        "gymnasiet", "seriöst", "cringe", "tiktok", "crush", "prov", "insta", "fomo",
+        "kompisdrama", "livet suger", "min klass"]
+    adult_keywords = ["jobb", "relation", "utmattad", "barnen", "psykolog", "deprimerad",
+        "utbränd", "ansvar", "chef", "partner", "ekonomi", "skilsmässa",
+        "karriär", "boende", "räkningar", "terapi", "familj"]
+
+    # Direkt keyword-matchning
     if any(word in text_lower for word in child_keywords):
         return "child"
     elif any(word in text_lower for word in teen_keywords):
         return "teen"
     elif any(word in text_lower for word in adult_keywords) or len(text.split()) > 40:
         return "adult"
-    else:
-        return "unknown"
+
+    # AI fallback
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Du är en profilklassificerare. Svara endast med: child, teen eller adult."},
+                {"role": "user", "content": text}
+            ],
+            max_tokens=5,
+            temperature=0.0
+        )
+        profile = response.choices[0].message.content.strip().lower()
+        if "child" in profile:
+            return "child"
+        elif "teen" in profile:
+            return "teen"
+        elif "adult" in profile:
+            return "adult"
+    except Exception as e:
+        print("Profile detection error:", e)
+
+    return "unknown"
 
 # Lagra historiken i RAM (per session_id om du vill)
 conversation_history = []
@@ -150,11 +184,25 @@ def generate_response(emotion, user_input, profile):
 
         # Olika profiler
         profile_prompt = {
-            "child": "Svara enkelt, tryggt och kort – som till ett barn. Undvik analyser och djupa frågor.",
-            "teen": "Svara lättsamt och vänligt – som en tonårskompis. Korta, enkla svar och ibland en följdfråga.",
-            "adult": "Svara med empati och respekt. Reflektera bara när användaren själv öppnar upp om känslor eller problem.",
-            "unknown": "Svara på ett naturligt och tryggt sätt som passar vem som helst."
-        }
+    "child": (
+        "Svara enkelt och tryggt, på barns nivå. "
+        "Använd korta meningar och ibland emojis. "
+        "Inga svåra frågor eller djup analys."
+    ),
+    "teen": (
+        "Svara lättsamt och vänligt – ungefär som en kompis i samma ålder. "
+        "Du kan använda lite ungdomligt språk och emojis, men utan att överdriva. "
+        "Korta, enkla svar, och ibland en följdfråga för att hålla igång snacket."
+    ),
+    "adult": (
+        "Svara med empati och respekt. "
+        "Var reflekterande och stödjande om användaren öppnar upp. "
+        "Om de skriver kort, håll det lättsamt och vardagligt."
+    ),
+    "unknown": (
+        "Svara på ett naturligt och tryggt sätt som passar vem som helst."
+    )
+}
 
         # Basprompt
         base_prompt = (
