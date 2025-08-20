@@ -137,9 +137,9 @@ def generate_response(emotion, user_input, profile):
         # Kolla om användaren frågar om skapare
         keywords = ["vem skapade", "vem byggde", "vem utveckla", "din skapare", "creator", "developer"]
         if any(k in user_input.lower() for k in keywords):
-        reply = creator_response()
-        conversation_history.append({"role": "assistant", "content": reply})
-        return reply
+           reply = creator_response()
+           conversation_history.append({"role": "assistant", "content": reply})
+           return reply
 
         # Lägg till användarens input i historiken
         conversation_history.append({"role": "user", "content": user_input})
