@@ -28,12 +28,12 @@ CREATOR_INFO = {
 
 # Färdiga sätt att svara på
 CREATOR_TEMPLATES = [
-    "Jag är byggd av {name} 👨‍💻\n\nHär hittar du mer:\n🔗 LinkedIn: {linkedin}\n🐙 GitHub: {github}\n📧 E-post: {email}",
-    "Hej! {name} har skapat mig 🚀\n\nVill du veta mer?\n💼 LinkedIn: {linkedin}\n💻 GitHub: {github}\n✉️ E-post: {email}",
-    "Psst... {name} är min skapare! 😊\n\nHär finns hen:\n👔 LinkedIn: {linkedin}\n👨‍💻 GitHub: {github}\n📨 E-post: {email}",
-    "Shoutout till {name} som byggde mig! 🙌\n\nKolla in:\n🔥 LinkedIn: {linkedin}\n🚀 GitHub: {github}\n💌 E-post: {email}",
-    "{name} är geniet bakom mig! 🤩\n\nConnecta:\n📱 LinkedIn: {linkedin}\n💾 GitHub: {github}\n📩 E-post: {email}",
-    "Tack till {name} för att jag finns! 💖\n\nNå honom via:\n👨‍💼 LinkedIn: {linkedin}\n👨‍🔬 GitHub: {github}\n📧 E-post: {email}"
+    "Jag är byggd av {name} 👨‍💻<br><br>Här hittar du mer:<br>🔗 <a href='{linkedin}' target='_blank'>Linkedin</a><br>🐙 <a href='{github}' target='_blank'>GitHub</a><br>📧 <a href='mailto:{email}'>{email}</a>",
+    "Hej! {name} har skapat mig 🚀<br><br>Vill du veta mer?<br>💼 <a href='{linkedin}' target='_blank'>Linkedin</a><br>💻 <a href='{github}' target='_blank'>GitHub</a><br>✉️ <a href='mailto:{email}'>{email}</a>",
+    "Psst... {name} är min skapare! 😊<br><br>Här finns hen:<br>👔 <a href='{linkedin}' target='_blank'>Linkedin</a><br>👨‍💻 <a href='{github}' target='_blank'>GitHub</a><br>📨 <a href='mailto:{email}'>{email}</a>",
+    "Shoutout till {name} som byggde mig! 🙌<br><br>Kolla in:<br>🔥 <a href='{linkedin}' target='_blank'>Linkedin</a><br>🚀 <a href='{github}' target='_blank'>GitHub</a><br>💌 <a href='mailto:{email}'>{email}</a>",
+    "{name} är geniet bakom mig! 🤩<br><br>Connecta:<br>📱 <a href='{linkedin}' target='_blank'>Linkedin</a><br>💾 <a href='{github}' target='_blank'>GitHub</a><br>📩 <a href='mailto:{email}'>{email}</a>",
+    "Tack till {name} för att jag finns! 💖<br><br>Nå honom via:<br>👨‍💼 <a href='{linkedin}' target='_blank'>Linkedin</a><br>👨‍🔬 <a href='{github}' target='_blank'>GitHub</a><br>📧 <a href='mailto:{email}'>{email}</a>"
 ]
 
 def creator_response():
