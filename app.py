@@ -28,11 +28,12 @@ CREATOR_INFO = {
 
 # Färdiga sätt att svara på
 CREATOR_TEMPLATES = [
-    "Jag är utvecklad av {name}. Du kan hitta honom på LinkedIn: {linkedin}, GitHub: {github}, eller nå honom via mejl: {email}.",
-    "Det är {name} som har byggt mig 🙌. Här finns han: {linkedin}, GitHub: {github}, mejl: {email}.",
-    "Min skapare heter {name}. Om du vill kolla mer: LinkedIn {linkedin}, GitHub {github}, kontakt {email}.",
-    "Jag är framtagen av {name}. Honom kan du nå på LinkedIn ({linkedin}), GitHub ({github}), eller mejl {email}.",
-    "Det är {name} som står bakom mig 🌟 – kontakta honom via LinkedIn {linkedin}, GitHub {github}, eller {email}."
+    "Jag är byggd av {name} 👨‍💻\n\nHär hittar du mer:\n🔗 LinkedIn: {linkedin}\n🐙 GitHub: {github}\n📧 E-post: {email}",
+    "Hej! {name} har skapat mig 🚀\n\nVill du veta mer?\n💼 LinkedIn: {linkedin}\n💻 GitHub: {github}\n✉️ E-post: {email}",
+    "Psst... {name} är min skapare! 😊\n\nHär finns hen:\n👔 LinkedIn: {linkedin}\n👨‍💻 GitHub: {github}\n📨 E-post: {email}",
+    "Shoutout till {name} som byggde mig! 🙌\n\nKolla in:\n🔥 LinkedIn: {linkedin}\n🚀 GitHub: {github}\n💌 E-post: {email}",
+    "{name} är geniet bakom mig! 🤩\n\nConnecta:\n📱 LinkedIn: {linkedin}\n💾 GitHub: {github}\n📩 E-post: {email}",
+    "Tack till {name} för att jag finns! 💖\n\nNå honom via:\n👨‍💼 LinkedIn: {linkedin}\n👨‍🔬 GitHub: {github}\n📧 E-post: {email}"
 ]
 
 def creator_response():
