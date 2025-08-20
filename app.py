@@ -136,7 +136,7 @@ def generate_response(emotion, user_input, profile):
             return "Jag är här för att stötta dig, men jag kan inte svara på det här innehållet."
 
         # Kolla om användaren frågar om skapare
-        keywords = ["vem skapade", "vem byggde", "vem utveckla", "din skapare", "creator", "developer"]
+        keywords = ["vem skapade","vem skapa", "vem byggde","har byggt", "vem utveckla","vem koda", "din skapare", "creator", "developer"]
         if any(k in user_input.lower() for k in keywords):
            reply = creator_response()
            conversation_history.append({"role": "assistant", "content": reply})
