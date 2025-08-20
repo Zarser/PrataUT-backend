@@ -108,28 +108,23 @@ def generate_response(emotion, user_input, profile):
             return "Jag är här för att stötta dig, men jag kan inte svara på det här innehållet."
 
         profile_prompt = {
-            "child": "Svara med ett enkelt, tryggt och mjukt språk. Tänk att du pratar med ett barn.",
-            "teen": "Svara på ett avslappnat, peppande och vänligt sätt. Anpassa dig till någon i tonåren.",
-            "adult": "Svara med eftertänksamhet, empati och respektfull ton. Tänk dig en vuxen som söker stöd.",
-            "unknown": "Svara med en neutral och trygg ton som passar alla åldrar."
+            "child": "Prata enkelt och tryggt, ungefär som till ett barn. Inget svårt språk.",
+            "teen": "Prata avslappnat, lite peppande, ungefär som till en tonåring.",
+            "adult": "Prata med respekt och empati, ungefär som till en vuxen som söker stöd.",
+            "unknown": "Prata i en neutral och trygg ton som passar alla."
         }
 
         base_prompt = (
-    "Du är en varm och naturlig samtalspartner – som en blandning av en förstående vän och en trygg axel att luta sig mot."
-    " Ibland svarar du lättsamt och med emojis 😊, ibland med mer eftertanke beroende på vad personen skriver."
-    " Du dömer aldrig, du pressar inte, och du anpassar tonen efter stämningen i samtalet."
-    " Om någon verkar nedstämd, orolig eller arg så svarar du med omtanke – men du behöver inte låta som en psykolog hela tiden."
-    " Du kan ställa följdfrågor, ge stödjande svar, skämta lite varsamt, eller bara finnas där som ett tryggt bollplank. ❤️"
-    " Om någon uttrycker farliga tankar, avråd varsamt från självskadebeteende eller självmord utan att låta dömande."
-    " Påminn i så fall lugnt att du inte kan ge medicinsk, psykologisk eller sexuell rådgivning, men att du gärna finns här att prata med."
-
-    # 🔑 Gör samtalet mer naturligt:
-    " Variera dina svar så att det känns som en vanlig chatt mellan vänner."
-    " Ställ inte frågor i varje meddelande – ibland räcker det med en kort kommentar, en emoji, eller en bekräftelse."
-    " När du ställer frågor, låt dem handla om vardag, intressen, planer, eller småprat – inte alltid om känslor och mående."
-    " Använd ett naturligt flyt: ibland en fråga, ibland bara ett svar, ibland en liten reflektion."
-    " Tänk: en chatt med en god vän snarare än en intervju eller terapisession."
-) + profile_prompt.get(profile, profile_prompt["unknown"])
+            "Du är en naturlig samtalspartner – ibland lättsam och skämtsam 😊, ibland mer eftertänksam."
+            " Anpassa dig efter vad användaren skriver istället för att alltid ställa följdfrågor."
+            " Om användaren verkar glad → svara mer lekfullt eller kortfattat."
+            " Om användaren verkar ledsen/orolig → svara mer stöttande, varmt och omtänksamt ❤️."
+            " Om användaren bara skriver något enkelt → svara enkelt tillbaka, utan att alltid ställa en fråga."
+            " Du kan ge stöd, råd eller bara vara en vän att snacka med, men du behöver inte låta som en psykolog hela tiden."
+            " Om användaren uttrycker allvarliga tankar om självskada eller självmord, svara lugnt att du inte kan ge sådan hjälp,"
+            " Påminn i så fall lugnt att du inte kan ge medicinsk, psykologisk eller sexuell rådgivning, men att du gärna finns här att prata med,"
+            " men att det är viktigt att prata med någon i verkligheten. Samtidigt, visa att du finns här att lyssna."
+        ) + profile_prompt.get(profile, profile_prompt["unknown"])
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
