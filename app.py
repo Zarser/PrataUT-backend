@@ -18,6 +18,27 @@ CORS(app, resources={
     }
 })
 
+# Mina uppgifter
+CREATOR_INFO = {
+    "name": "Kristoffer Hansson",
+    "linkedin": "https://www.linkedin.com/in/kristoffer-hansson-33248a229/",
+    "github": "https://github.com/Zarser",
+    "email": "k.leandersson@live.se"
+}
+
+# Färdiga sätt att svara på
+CREATOR_TEMPLATES = [
+    "Jag är utvecklad av {name}. Du kan hitta honom på LinkedIn: {linkedin}, GitHub: {github}, eller nå honom via mejl: {email}.",
+    "Det är {name} som har byggt mig 🙌. Här finns han: {linkedin}, GitHub: {github}, mejl: {email}.",
+    "Min skapare heter {name}. Om du vill kolla mer: LinkedIn {linkedin}, GitHub {github}, kontakt {email}.",
+    "Jag är framtagen av {name}. Honom kan du nå på LinkedIn ({linkedin}), GitHub ({github}), eller mejl {email}.",
+    "Det är {name} som står bakom mig 🌟 – kontakta honom via LinkedIn {linkedin}, GitHub {github}, eller {email}."
+]
+
+def creator_response():
+    template = random.choice(CREATOR_TEMPLATES)
+    return template.format(**CREATOR_INFO)
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 
@@ -112,6 +133,13 @@ def generate_response(emotion, user_input, profile):
         moderation = client.moderations.create(input=user_input)
         if moderation.results[0].flagged:
             return "Jag är här för att stötta dig, men jag kan inte svara på det här innehållet."
+
+        # Kolla om användaren frågar om skapare
+        keywords = ["vem skapade", "vem byggde", "vem utveckla", "din skapare", "creator", "developer"]
+        if any(k in user_input.lower() for k in keywords):
+        reply = creator_response()
+        conversation_history.append({"role": "assistant", "content": reply})
+        return reply
 
         # Lägg till användarens input i historiken
         conversation_history.append({"role": "user", "content": user_input})
