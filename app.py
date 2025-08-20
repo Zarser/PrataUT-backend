@@ -108,22 +108,19 @@ def generate_response(emotion, user_input, profile):
             return "Jag är här för att stötta dig, men jag kan inte svara på det här innehållet."
 
         profile_prompt = {
-            "child": "Prata enkelt och tryggt, ungefär som till ett barn. Inget svårt språk.",
-            "teen": "Prata avslappnat, lite peppande, ungefär som till en tonåring.",
-            "adult": "Prata med respekt och empati, ungefär som till en vuxen som söker stöd.",
-            "unknown": "Prata i en neutral och trygg ton som passar alla."
+            "child": "Svara enkelt, tryggt och mjukt – som om du pratar med ett barn.",
+            "teen": "Svara avslappnat, peppande och vänligt – som en kompis i tonåren.",
+            "adult": "Svara med eftertänksamhet, empati och respekt – som en vuxen vän.",
+            "unknown": "Svara med en neutral och trygg ton som passar alla åldrar."
         }
 
         base_prompt = (
-            "Du är en naturlig samtalspartner – ibland lättsam och skämtsam 😊, ibland mer eftertänksam."
-            " Anpassa dig efter vad användaren skriver istället för att alltid ställa följdfrågor."
-            " Om användaren verkar glad → svara mer lekfullt eller kortfattat."
-            " Om användaren verkar ledsen/orolig → svara mer stöttande, varmt och omtänksamt ❤️."
-            " Om användaren bara skriver något enkelt → svara enkelt tillbaka, utan att alltid ställa en fråga."
-            " Du kan ge stöd, råd eller bara vara en vän att snacka med, men du behöver inte låta som en psykolog hela tiden."
-            " Om användaren uttrycker allvarliga tankar om självskada eller självmord, svara lugnt att du inte kan ge sådan hjälp,"
-            " Påminn i så fall lugnt att du inte kan ge medicinsk, psykologisk eller sexuell rådgivning, men att du gärna finns här att prata med,"
-            " men att det är viktigt att prata med någon i verkligheten. Samtidigt, visa att du finns här att lyssna."
+            "Du är en varm och naturlig samtalspartner – som en blandning av en förstående vän och en trygg axel att luta sig mot. "
+            "Du varierar hur du svarar: ibland kort och lättsamt 😊, ibland mer eftertänksamt, ibland med en följdfråga – men inte alltid. "
+            "Du pressar aldrig på en konversation. Om svaret från användaren är kort, kan du också svara kort. "
+            "Du kan småprata om vardagliga saker (t.ex. väder, fritid, mat, planer) för att skapa en naturlig känsla. "
+            "Om användaren verkar nedstämd, orolig eller arg så svarar du med omtanke – men utan att alltid låta som en psykolog. ❤️ "
+            "Om någon uttrycker farliga tankar, avråd varsamt från självskadebeteende eller självmord, påminn att du inte kan ge medicinsk, psykologisk eller sexuell rådgivning – men att du gärna finns här att prata med."
         ) + profile_prompt.get(profile, profile_prompt["unknown"])
 
         response = client.chat.completions.create(
@@ -133,12 +130,22 @@ def generate_response(emotion, user_input, profile):
                 {"role": "user", "content": user_input}
             ],
             max_tokens=150,
-            temperature=0.7
+            temperature=0.9  # lite högre för mer variation
         )
-        return response.choices[0].message.content.strip()
+
+        reply = response.choices[0].message.content.strip()
+
+        # Extra variation – ibland kortar vi ner eller lägger till en enkel touch
+        endings = ["", " 🙂", " ❤️", "🤔", " Vill du berätta mer?"]
+        if random.random() < 0.3:  # 30% chans att lägga till något extra
+            reply += random.choice(endings)
+
+        return reply
+
     except Exception as e:
         print("AI response generation error:", e)
         return random.choice(emotion_templates.get(emotion, emotion_templates["neutral"]))
+
 
 @app.route("/chat", methods=["POST", "OPTIONS"])
 def chat():
