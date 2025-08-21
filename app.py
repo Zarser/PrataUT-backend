@@ -277,7 +277,7 @@ def generate_response(emotion, user_input, profile):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            max_tokens=100,
+            max_tokens=80,
             temperature=0.8
         )
 
