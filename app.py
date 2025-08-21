@@ -264,7 +264,7 @@ def generate_response(emotion, user_input, profile):
     "Undvik att ställa följdfrågor varje gång – gör det bara ibland för att hålla igång samtalet naturligt. "
     "Du kan småprata om vardagliga saker för att kännas mer naturlig. "
     "Undvik medicinska, psykologiska och sexuella råd – men var empatisk och stöttande. "
-    "Svara alltid inom 80 tokens och formulera fullständiga meningar; avbryt inte dina meningar."
+    "Skriv svar som alltid är fullständiga meningar. Om du inte hinner förklara allt på 80 tokens, skriv kortare meningar som avslutas ordentligt."
         ) + profile_prompt.get(profile, profile_prompt["unknown"])
 
         # Anpassning efter användarens input-längd
@@ -278,7 +278,7 @@ def generate_response(emotion, user_input, profile):
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            max_tokens=80,
+            max_tokens=100,
             temperature=0.8
         )
 
