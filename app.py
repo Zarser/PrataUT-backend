@@ -265,7 +265,6 @@ def generate_response(emotion, user_input, profile):
     "Du kan småprata om vardagliga saker för att kännas mer naturlig. "
     "Undvik medicinska, psykologiska och sexuella råd – men var empatisk och stöttande. "
     "Svara alltid inom 80 tokens och formulera fullständiga meningar; avbryt inte dina meningar."
-)
         ) + profile_prompt.get(profile, profile_prompt["unknown"])
 
         # Anpassning efter användarens input-längd
