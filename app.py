@@ -27,18 +27,25 @@ CREATOR_INFO = {
     "email": "k.leandersson@live.se"
 }
 
-# Färdiga sätt att svara på
-CREATOR_TEMPLATES = [
-    "Jag är byggd av {name} 👨‍💻\n\nHär hittar du mer:\n🔗 [LinkedIn]{linkedin}\n🐙 [GitHub]{github}\n📧 [E-post]{email}",
-    "Hej! {name} har skapat mig 🚀\n\nVill du veta mer?\n💼 [LinkedIn]{linkedin}\n💻 [GitHub]{github}\n✉️ [E-post]{email}",
-    "Psst... {name} är min skapare! 😊\n\nHär finns hen:\n👔 [LinkedIn]{linkedin}\n👨‍💻 [GitHub]{github}\n📨 [E-post]{email}",
-    "Shoutout till {name} som byggde mig! 🙌\n\nKolla in:\n🔥 [LinkedIn]{linkedin}\n🚀 [GitHub]{github}\n💌 [E-post]{email}",
-    "{name} är geniet bakom mig! 🤩\n\nConnecta:\n📱 [LinkedIn]{linkedin}\n💾 [GitHub]{github}\n📩 [E-post]{email}",
-    "Tack till {name} för att jag finns! 💖\n\nNå honom via:\n👨‍💼 [LinkedIn]{linkedin}\n👨‍🔬 [GitHub]{github}\n📧 [E-post]{email}"
+# Svarsmallar på svenska
+CREATOR_TEMPLATES_SE = [
+    "Jag är byggd av {name} 👨‍💻\n\nHär hittar du mer:\n🔗 [LinkedIn]({linkedin})\n🐙 [GitHub]({github})\n📧 [E-post]({email})",
+    "Hej! {name} har skapat mig 🚀\n\nVill du veta mer?\n💼 [LinkedIn]({linkedin})\n💻 [GitHub]({github})\n✉️ [E-post]({email})",
+    "Psst... {name} är min skapare! 😊\n\nHär finns hen:\n👔 [LinkedIn]({linkedin})\n👨‍💻 [GitHub]({github})\n📨 [E-post]({email})"
 ]
 
-def creator_response():
-    template = random.choice(CREATOR_TEMPLATES)
+# Svarsmallar på engelska
+CREATOR_TEMPLATES_EN = [
+    "I was built by {name} 👨‍💻\n\nFind out more:\n🔗 [LinkedIn]({linkedin})\n🐙 [GitHub]({github})\n📧 [Email]({email})",
+    "Hi there! {name} created me 🚀\n\nWant to know more?\n💼 [LinkedIn]({linkedin})\n💻 [GitHub]({github})\n✉️ [Email]({email})",
+    "Psst... {name} is my creator! 😊\n\nHere's where you can find them:\n👔 [LinkedIn]({linkedin})\n👨‍💻 [GitHub]({github})\n📨 [Email]({email})"
+]
+
+def creator_response(language="en"):
+    if language == "se":
+        template = random.choice(CREATOR_TEMPLATES_SE)
+    else:
+        template = random.choice(CREATOR_TEMPLATES_EN)
     return template.format(**CREATOR_INFO)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -206,11 +213,17 @@ def generate_response(emotion, user_input, profile):
             return "Jag är här för att stötta dig, men jag kan inte svara på det här innehållet."
 
         # Kolla om användaren frågar om skapare
-        keywords = ["vem skapade","vem skapa", "vem byggde","har byggt", "vem utveckla","vem koda", "din skapare", "creator", "developer"]
-        if any(k in user_input.lower() for k in keywords):
-           reply = creator_response()
-           conversation_history.append({"role": "assistant", "content": reply})
-           return reply
+        KEYWORDS_SE = ["vem skapade","vem skapa", "vem byggde","har byggt", "vem utveckla","vem koda", "din skapare"]
+        KEYWORDS_EN = ["who created", "who made", "who built", "who developed", "who coded", "your creator", "creator", "developer"]
+        user_input_lower = user_input.lower()
+if any(k in user_input_lower for k in KEYWORDS_SE):
+    reply = creator_response(language="se")
+    conversation_history.append({"role": "assistant", "content": reply})
+    return reply
+elif any(k in user_input_lower for k in KEYWORDS_EN):
+    reply = creator_response(language="en")
+    conversation_history.append({"role": "assistant", "content": reply})
+    return reply
 
         # Lägg till användarens input i historiken
         conversation_history.append({"role": "user", "content": user_input})
