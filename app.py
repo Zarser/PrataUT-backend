@@ -204,7 +204,7 @@ def guess_user_profile(text):
 conversation_history = []
 
 def generate_response(emotion, user_input, profile):
-    global conversation_history  # så vi kan uppdatera listan
+    global conversation_history
 
     try:
         # Moderering
@@ -216,14 +216,14 @@ def generate_response(emotion, user_input, profile):
         KEYWORDS_SE = ["vem skapade","vem skapa", "vem byggde","har byggt", "vem utveckla","vem koda", "din skapare"]
         KEYWORDS_EN = ["who created", "who made", "who built", "who developed", "who coded", "your creator", "creator", "developer"]
         user_input_lower = user_input.lower()
-if any(k in user_input_lower for k in KEYWORDS_SE):
-    reply = creator_response(language="se")
-    conversation_history.append({"role": "assistant", "content": reply})
-    return reply
-elif any(k in user_input_lower for k in KEYWORDS_EN):
-    reply = creator_response(language="en")
-    conversation_history.append({"role": "assistant", "content": reply})
-    return reply
+        if any(k in user_input_lower for k in KEYWORDS_SE):
+            reply = creator_response(language="se")
+            conversation_history.append({"role": "assistant", "content": reply})
+            return reply
+        elif any(k in user_input_lower for k in KEYWORDS_EN):
+            reply = creator_response(language="en")
+            conversation_history.append({"role": "assistant", "content": reply})
+            return reply
 
         # Lägg till användarens input i historiken
         conversation_history.append({"role": "user", "content": user_input})
