@@ -84,6 +84,41 @@ emotion_templates = {
     ]
 }
 
+# ----- Krisdetektor -----
+CRISIS_PATTERNS = [
+    r"\b(t[aä]nker|funderar)\s+(ta\s+livet\s+av\s+mig|d[öo]da\s+mig)\b",
+    r"\b(jag\s+vill|ska)\s+(ta\s+livet\s+av\s+mig|d[öo]da\s+mig)\b",
+    r"\b(sj[äa]lvskad|skada\s+mig\s+sj[äa]lv|cutta|skurit\s+mig)\b",
+    r"\b(orkar\s+inte\s+mer|vill\s+inte\s+leva)\b"
+]
+def is_crisis(text: str) -> bool:
+    t = text.lower()
+    return any(re.search(p, t) for p in CRISIS_PATTERNS))
+
+def crisis_reply():
+    # Håll det tryggt, kort och handlingsinriktat; inga medicinska råd.
+    return (
+        "Jag blir orolig när jag läser det du skriver. Du ska inte behöva bära det här ensam. "
+        "Om det är akut: ring 112. Om du kan, prata med en pålitlig vuxen eller en stödlinje i närheten. "
+        "Jag finns kvar här och lyssnar – du är viktig. 🤍"
+    )
+
+
+# ----- Hjälpfunktioner för naturlighet -----
+def ends_with_question(s: str) -> bool:
+    return s.strip().endswith("?")
+
+SMALLTALK = [
+    "Vad pysslar du med just nu?",
+    "Hur ser resten av dagen ut?",
+    "Har du något litet du ser fram emot?",
+    "Vill du snacka om något helt annat en stund?"
+]
+
+EMOJI_ENDINGS = [" 🙂"," 😊"," 😁"," 🤗"," 🥰"," 🤔"," 👍"," ✨"," ❤️"," 💙"," 💜"," ☕"," 🚲"," 🐶"," 🐱",""]
+
+
+
 def detect_emotion(text):
     try:
         response = client.chat.completions.create(
