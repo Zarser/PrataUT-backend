@@ -93,7 +93,7 @@ CRISIS_PATTERNS = [
 ]
 def is_crisis(text: str) -> bool:
     t = text.lower()
-    return any(re.search(p, t) for p in CRISIS_PATTERNS))
+    return any(re.search(p, t) for p in CRISIS_PATTERNS)
 
 def crisis_reply():
     # Håll det tryggt, kort och handlingsinriktat; inga medicinska råd.
